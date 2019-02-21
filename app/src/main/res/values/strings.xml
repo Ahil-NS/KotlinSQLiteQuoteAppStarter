@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">KotlinSQLiteQuoteAppStarter</string>
+    <string name="enter_quote">Enter Quote</string>
+    <string name="enter_quote_type">Enter Quote Type</string>
+    <string name="enter_user_name">Enter User Name</string>
+    <string name="get_started">GET STARTED</string>
 </resources>
