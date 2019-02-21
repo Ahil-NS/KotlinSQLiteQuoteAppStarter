@@ -2,6 +2,7 @@ package com.example.kotlinsqlitequoteappstarter.Controller
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import com.example.kotlinsqlitequoteappstarter.Data.QuoteDatabaseHandler
 import com.example.kotlinsqlitequoteappstarter.Model.Quote
 import com.example.kotlinsqlitequoteappstarter.R
@@ -19,6 +20,9 @@ class MainActivity : AppCompatActivity() {
         var quote = Quote()
         quote.quoteTitle = "Develop your skills"
         quote.createdBy = "Ahil"
-        dbHandler!!.createChore(quote)
+        dbHandler!!.createQuote(quote)
+
+        var readQ: Quote = dbHandler!!.readQuote(1)
+        Log.d("DATA INSERTED", "SUCCESS ${readQ.quoteTitle}")
     }
 }
