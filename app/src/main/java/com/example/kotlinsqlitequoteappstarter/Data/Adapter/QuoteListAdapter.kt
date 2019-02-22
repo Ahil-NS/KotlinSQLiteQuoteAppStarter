@@ -1,7 +1,9 @@
 package com.example.kotlinsqlitequoteappstarter.Data.Adapter
 
+import android.app.AlertDialog
 import android.content.Context
 import android.support.v7.widget.RecyclerView
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +13,7 @@ import android.widget.Toast
 import com.example.kotlinsqlitequoteappstarter.Data.QuoteDatabaseHandler
 import com.example.kotlinsqlitequoteappstarter.Model.Quote
 import com.example.kotlinsqlitequoteappstarter.R
+import kotlinx.android.synthetic.main.popup.view.*
 
 class QuoteListAdapter(
     private val list: ArrayList<Quote>,
@@ -18,7 +21,7 @@ class QuoteListAdapter(
 ) : RecyclerView.Adapter<QuoteListAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder?.bindViews(list[position])
+        holder.bindViews(list[position])
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, position: Int): ViewHolder {
@@ -66,11 +69,14 @@ class QuoteListAdapter(
            when(v!!.id){
 
                deleteBtn.id ->{
-
                    deleteQuote(quote.id!!)
                    mList.removeAt(adapterPosition)
                    notifyItemRemoved(adapterPosition)
                    Toast.makeText(mContext,"edit",Toast.LENGTH_SHORT).show()
+               }
+
+               editBtn.id -> {
+                   editQuote(quote)
                }
 
 
@@ -79,11 +85,47 @@ class QuoteListAdapter(
 
         fun deleteQuote(id: Int) {
 
-            var db: QuoteDatabaseHandler = QuoteDatabaseHandler(mContext)
+            var db = QuoteDatabaseHandler(mContext)
             db.deleteQuote(id)
 
         }
 
+        fun editQuote( quote: Quote) {
+
+            var dialogBuilder: AlertDialog.Builder?
+            var dialog: AlertDialog?
+            var dbHandler = QuoteDatabaseHandler(context)
+
+            var view = LayoutInflater.from(context).inflate(R.layout.popup, null)
+            var quoteTitle = view.popQuoteText
+            var quoteUser = view.popQuoteUserText
+            var saveButton = view.popQuoteStarterButton
+
+            dialogBuilder = AlertDialog.Builder(context).setView(view)
+            dialog = dialogBuilder!!.create()
+            dialog?.show()
+
+            saveButton.setOnClickListener {
+                var title = quoteTitle.text.toString().trim()
+                var quoteUser =  quoteUser.text.toString().trim()
+
+
+                if (!TextUtils.isEmpty(title)
+                    && !TextUtils.isEmpty(quoteUser)
+                   ) {
+
+                    quote.quoteTitle = title
+                    quote.createdBy = quoteUser
+
+                    dbHandler!!.updateQuote(quote)
+                    notifyItemChanged(adapterPosition, quote)
+                    dialog!!.dismiss()
+
+                } else {
+
+                }
+            }
+        }
     }
 
 }
