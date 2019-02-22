@@ -1,6 +1,6 @@
 package com.example.kotlinsqlitequoteappstarter.Controller
 
-import android.app.ProgressDialog
+import android.app.AlertDialog
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -16,23 +16,24 @@ class MainActivity : AppCompatActivity() {
 
     var dbHandler: QuoteDatabaseHandler? = null
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         dbHandler = QuoteDatabaseHandler(this)
+        checkDB()
 
-
-        getStarterButton.setOnClickListener {
+        popQuoteStarterButton.setOnClickListener {
             progressBar.visibility = View.VISIBLE
 
-            if (!TextUtils.isEmpty(quoteText.text.toString())
-                && !TextUtils.isEmpty(quoteUserText.text.toString())
+            if (!TextUtils.isEmpty(popQuoteText.text.toString())
+                && !TextUtils.isEmpty(popQuoteUserText.text.toString())
                 ) {
                 //save to database
                 var quote = Quote()
-                quote.quoteTitle = quoteText.text.toString()
-                quote.createdBy = quoteUserText.text.toString()
+                quote.quoteTitle = popQuoteText.text.toString()
+                quote.createdBy = popQuoteUserText.text.toString()
 
                 saveToDB(quote)
                 progressBar.visibility = View.GONE
@@ -47,5 +48,10 @@ class MainActivity : AppCompatActivity() {
 
     fun saveToDB(quote: Quote) {
         dbHandler!!.createQuote(quote)
+    }
+    fun checkDB() {
+        if (dbHandler!!.getQuotesCount() > 0) {
+            startActivity(Intent(this, QuoteListActivity::class.java))
+        }
     }
 }
