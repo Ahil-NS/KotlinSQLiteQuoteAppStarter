@@ -1,6 +1,7 @@
 package com.example.kotlinsqlitequoteappstarter.Controller
 
 import android.app.ProgressDialog
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
@@ -35,6 +36,8 @@ class MainActivity : AppCompatActivity() {
 
                 saveToDB(quote)
                 progressBar.visibility = View.GONE
+                startActivity(Intent(this, QuoteListActivity::class.java))
+
 
             } else {
                 Toast.makeText(this, "Please enter a quote", Toast.LENGTH_LONG).show()
