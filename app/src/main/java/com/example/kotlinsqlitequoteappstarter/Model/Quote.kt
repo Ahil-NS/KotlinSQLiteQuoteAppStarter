@@ -1,5 +1,8 @@
 package com.example.kotlinsqlitequoteappstarter.Model
 
+import java.text.DateFormat
+import java.util.*
+
 class Quote() {
     var quoteTitle: String? = null
     var createdBy: String? = null
@@ -11,5 +14,14 @@ class Quote() {
         this.createdBy = createdBy
         this.timeCreated = timeCreated
         this.id = id
+    }
+
+    fun showHumanDate(timeAssigned: Long): String {
+
+        var dateFormat: java.text.DateFormat = DateFormat.getDateInstance()
+        var formattedDate: String = dateFormat.format(Date(timeAssigned).time)
+
+        return "Created: ${formattedDate}"
+
     }
 }

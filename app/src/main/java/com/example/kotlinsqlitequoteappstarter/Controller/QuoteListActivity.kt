@@ -4,6 +4,9 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import com.example.kotlinsqlitequoteappstarter.Data.Adapter.QuoteListAdapter
 import com.example.kotlinsqlitequoteappstarter.Data.QuoteDatabaseHandler
 import com.example.kotlinsqlitequoteappstarter.Model.Quote
@@ -26,18 +29,14 @@ class QuoteListActivity : AppCompatActivity() {
 
         dbHandler = QuoteDatabaseHandler(this)
 
-
         quoteList = ArrayList<Quote>()
         quoteListItems = ArrayList()
         layoutManager = LinearLayoutManager(this)
         adapter = QuoteListAdapter(quoteListItems!!, this)
 
-
-        // setup list = recyclerview
         quoteRecyclerView.layoutManager = layoutManager
         quoteRecyclerView.adapter = adapter
 
-        //Load our chores
         quoteList = dbHandler!!.readQuotes()
         //quoteList!!.reverse()
 
@@ -47,20 +46,25 @@ class QuoteListActivity : AppCompatActivity() {
             quote.quoteTitle = "Quote: ${c.quoteTitle}"
             quote.createdBy = "Created By: ${c.createdBy}"
             quote.id = c.id
-           // quote.showHumanDate(c.timeAssigned!!)
+            quote.showHumanDate(c.timeCreated!!)
 
-
-//            Log.d("====ID=====", c.id.toString())
-//            Log.d("====Name=====", c.choreName)
-//            Log.d("====Date=====", chore.showHumanDate(c.timeAssigned!!))
-//            Log.d("====aTo=====", c.assignedTo)
-//            Log.d("====aBy=====", c.assignedTo)
             quoteListItems!!.add(quote)
-
-
         }
         adapter!!.notifyDataSetChanged()
 
-
     }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.top_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+
+        if (item!!.itemId == R.id.addMenuButton) {
+            Log.d("Item Clicked", "Item Clicked")
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
 }
